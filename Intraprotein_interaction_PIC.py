@@ -29,7 +29,7 @@ def get_argument():
 	if filename[-4:] != ".pdb":
 		sys.exit("{} n'est pas un fichier pdb".format(filename))
 	if filename[4:6] != "FH" :
-		sys.exit("{} doit d'abord être traité par reduce".format(filename))
+		sys.exit("{} doit d'abord être traité par reduce et le fichier doit être de la forme myfileFH.pdb".format(filename))
 	return filename
 
 
@@ -182,7 +182,7 @@ def disulphite_bridges(dict_distance,pdb_name) :
 
 
 def main_main_hydrogen_bonds(distance_matrix, dict_vec_pos,pdb_name) :
-	with open(pdb_name+"intraprotein_main_main_chain_hydrogen_bonds.txt", "w") as mm_hbond_file :
+	with open(pdb_name+"_intraprotein_main_main_chain_hydrogen_bonds.txt", "w") as mm_hbond_file :
 		mm_hbond_file.write("\t\tDONOR\t\t\t\t\tACCEPTOR\t\t\tPARAMETERS\t\t\n")
 		mm_hbond_file.write("POS\tCHAIN\tRES\tATOM\tPOS\tCHAIN\tRES\tATOM\tDd-a\tDh-a\tdon-h-acc\tacc-don-h\n")
 		for atom_a, value in distance_matrix.items() :
