@@ -194,8 +194,10 @@ def main_main_hydrogen_bonds(distance_matrix, dict_vec_pos,pdb_name) :
 							antecedent = dict_vec_pos["C", atom_b[1], atom_b[2], atom_b[3]]#atome antecedent à l'atome accepteur O
 							acceptor = dict_vec_pos[atom_a]
 							donor = dict_vec_pos[atom_b]
-							h = dict_vec_pos["H", atom_a[1], atom_a[2], atom_a[3]]#vecteur x,y,z de l'atome d'hydrogene lie au donneur N
-							dist_h_acceptor = distance_matrix["H", atom_a[1], atom_a[2], atom_a[3]][atom_b[0], atom_b[1], atom_b[2], atom_b[3]]
+							h = dict_vec_pos["H", atom_a[1], atom_a[2], atom_a[3]]#vecteur x,y,z de l'atome d'hydrogene lie
+							# au donneur N
+							dist_h_acceptor = distance_matrix["H", atom_a[1], atom_a[2], atom_a[3]]\
+								[atom_b[0], atom_b[1], atom_b[2], atom_b[3]]
 							angle_1 = angle(donor,h,acceptor)
 							angle_2 = angle(acceptor,donor,antecedent)
 							mm_hbond_file.write("{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\n".format(atom_a[2],\
@@ -230,13 +232,15 @@ def aromatic_aromatic_interaction(distance_matrix, dict_vec_pos,pdb_name) :
 								mid_1_b = dict_vec_pos[b1_name, atom_a[1], atom_a[2], atom_a[3]]
 								mid_2_a = dict_vec_pos[a2_name, atom_b[1], atom_b[2], atom_b[3]]
 								mid_2_b = dict_vec_pos[b2_name, atom_b[1], atom_b[2], atom_b[3]]
-								centroid_1 = np.array([((mid_1_a[0]+mid_1_b[0])/2), ((mid_1_a[1]+mid_1_b[1])/2), ((mid_1_a[2]+mid_1_b[2])/2)])
+								centroid_1 = np.array([((mid_1_a[0]+mid_1_b[0])/2), ((mid_1_a[1]+mid_1_b[1])/2),\
+									((mid_1_a[2]+mid_1_b[2])/2)])
 								#aromatique = hexagone donc on prend le centre d'une des diagonales pour avoir le centroid 						
-								centroid_2 = np.array([((mid_2_a[0]+mid_2_b[0])/2), ((mid_2_a[1]+mid_2_b[1])/2), ((mid_2_a[2]+mid_2_b[2])/2)])
+								centroid_2 = np.array([((mid_2_a[0]+mid_2_b[0])/2), ((mid_2_a[1]+mid_2_b[1])/2),\
+									((mid_2_a[2]+mid_2_b[2])/2)])
 								dist_centroid = dist(centroid_1, centroid_2)					
 								if (4.5 <= dist_centroid <= 7) :
-									aromatic_file.write("{}\t{}\t{}\t{}\t{}\t{}\t{}\n".format(atom_a[2],atom_a[1],atom_a[3],atom_b[2],atom_b[1],\
-											atom_b[3],round(dist_centroid,2)))
+									aromatic_file.write("{}\t{}\t{}\t{}\t{}\t{}\t{}\n".format(atom_a[2],atom_a[1],\
+											atom_a[3],atom_b[2],atom_b[1],atom_b[3],round(dist_centroid,2)))
 
 
 def aromatic_sulfur_interaction(distance_matrix, dict_vec_pos,pdb_name) :
@@ -348,14 +352,15 @@ def side_side_hydrogen_bond(distance_matrix, position_vector,pdb_name) :
 									for i in range(len(dict_hydrogen[atom_a[0]])) :
 										dict_hydrogen_value = dict_hydrogen[atom_a[0]][i]
 										h = position_vector[dict_hydrogen_value, atom_a[1], atom_a[2], atom_a[3]]
-										dist_h_acceptor = distance_matrix[dict_hydrogen_value, atom_a[1], atom_a[2], atom_a[3]][atom_b[0], atom_b[1], atom_b[2], atom_b[3]]
+										dist_h_acceptor = distance_matrix[dict_hydrogen_value, atom_a[1], atom_a[2], atom_a[3]]\
+											[atom_b[0], atom_b[1], atom_b[2], atom_b[3]]
 										angle_1 = angle(donor,h,acceptor)
 										angle_2 = angle(donor,acceptor,antecedent)
 										angle_3 = angle(h,acceptor,antecedent)
 										if dist_h_acceptor < 2.5 and angle_1 > 90 :
 											side_side_hbond.write("{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\n".format(atom_a[2],\
-												atom_a[3],atom_a[1],atom_a[0],atom_b[2],atom_b[3],atom_b[1],\
-													atom_b[0],round(distance_a_b,2),round(dist_h_acceptor,2),round(angle_1,2),round(angle_2,2),round(angle_3,2)))
+												atom_a[3],atom_a[1],atom_a[0],atom_b[2],atom_b[3],atom_b[1],atom_b[0],round(distance_a_b,2),\
+													round(dist_h_acceptor,2),round(angle_1,2),round(angle_2,2),round(angle_3,2)))
 
 
 if __name__ == "__main__" :
